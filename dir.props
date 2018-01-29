@@ -76,7 +76,8 @@
     <SharedFrameworkNugetVersion>$(ProductVersion)</SharedFrameworkNugetVersion>
 
     <RuntimeDepsDebVersion Condition="'$(RuntimeDepsDebVersion)'==''">$(ProductVersion)</RuntimeDepsDebVersion>
-
+    <RuntimeDepsRpmVersion Condition="'$(RuntimeDepsRpmVersion)'==''">$(ProductVersion)</RuntimeDepsRpmVersion>
+    
     <UWPCoreRuntimeSdkVersion>6.1.0</UWPCoreRuntimeSdkVersion>
     <UWPCoreRuntimeSdkFullVersion>$(UWPCoreRuntimeSdkVersion)$(ProductVersionSuffix)</UWPCoreRuntimeSdkFullVersion>
 
@@ -399,6 +400,10 @@
     <SharedHostInstallerFile Condition="'$(InstallerExtension)' == '.deb'">$(SharedHostInstallerStart)$(SharedFrameworkNugetVersion)-$(TargetArchitecture)$(InstallerExtension)</SharedHostInstallerFile>
     <HostFxrInstallerFile Condition="'$(InstallerExtension)' == '.deb'">$(HostFxrInstallerStart)$(HostResolverVersion)-$(TargetArchitecture)$(InstallerExtension)</HostFxrInstallerFile>
     <SharedFrameworkInstallerFile Condition="'$(InstallerExtension)' == '.deb'">$(SharedFrameworkInstallerStart)$(SharedFrameworkNugetVersion)-$(TargetArchitecture)$(InstallerExtension)</SharedFrameworkInstallerFile>
+    <!-- Runtime Rpm packages are distro version agnostic --> 
+    <SharedHostInstallerFile Condition="'$(InstallerExtension)' == '.rpm'">$(SharedHostInstallerStart)$(SharedFrameworkNugetVersion)-$(TargetArchitecture)$(InstallerExtension)</SharedHostInstallerFile>
+    <HostFxrInstallerFile Condition="'$(InstallerExtension)' == '.rpm'">$(HostFxrInstallerStart)$(HostResolverVersion)-$(TargetArchitecture)$(InstallerExtension)</HostFxrInstallerFile>
+    <SharedFrameworkInstallerFile Condition="'$(InstallerExtension)' == '.rpm'">$(SharedFrameworkInstallerStart)$(SharedFrameworkNugetVersion)-$(TargetArchitecture)$(InstallerExtension)</SharedFrameworkInstallerFile>
     
     <DotnetRuntimeDependenciesPackageInstallerFile>$(DotnetRuntimeDependenciesPackageInstallerStart)$(ProductMoniker)$(InstallerExtension)</DotnetRuntimeDependenciesPackageInstallerFile>
   </PropertyGroup>
