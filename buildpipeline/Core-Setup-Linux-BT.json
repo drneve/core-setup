@@ -549,7 +549,7 @@
       "enabled": true,
       "continueOnError": false,
       "alwaysRun": false,
-      "displayName": "Package - Rhel7",
+      "displayName": "Package Runtime Dep - Rhel7",
       "timeoutInMinutes": 0,
       "refName": "Task38",
       "task": {
@@ -569,7 +569,7 @@
       "enabled": true,
       "continueOnError": false,
       "alwaysRun": false,
-      "displayName": "Publish - Rhel7",
+      "displayName": "Publish Runtime Dep - Rhel7",
       "timeoutInMinutes": 0,
       "refName": "Task39",
       "task": {
@@ -589,7 +589,7 @@
       "enabled": true,
       "continueOnError": false,
       "alwaysRun": false,
-      "displayName": "Package - OpenSuse",
+      "displayName": "Package Runtime Dep - OpenSuse",
       "timeoutInMinutes": 0,
       "refName": "Task38",
       "task": {
@@ -609,7 +609,7 @@
       "enabled": true,
       "continueOnError": false,
       "alwaysRun": false,
-      "displayName": "Publish - OpenSuse",
+      "displayName": "Publish Runtime Dep - OpenSuse",
       "timeoutInMinutes": 0,
       "refName": "Task39",
       "task": {
