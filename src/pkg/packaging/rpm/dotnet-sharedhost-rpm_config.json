@@ -36,11 +36,11 @@
         "dotnet-nightly"
     ],
     
-    "rpm_dependencies":[
+    "rpm_dependencies": [{
         "%RUNTIME_DEPS_RPM_PACKAGE_NAME%" : {
             "package_version": "%RUNTIME_DEPS_VERSION%"
         } 
-     ],
+    }],
 
     "directories" : [
         "/usr/share/dotnet",
