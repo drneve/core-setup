@@ -37,9 +37,8 @@
     ],
     
     "rpm_dependencies": [{
-        "%RUNTIME_DEPS_RPM_PACKAGE_NAME%" : {
-            "package_version": "%RUNTIME_DEPS_VERSION%"
-        } 
+        "package_name": "%RUNTIME_DEPS_RPM_PACKAGE_NAME%",
+        "package_version": "%RUNTIME_DEPS_VERSION%"
     }],
 
     "directories" : [
