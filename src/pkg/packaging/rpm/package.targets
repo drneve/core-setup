@@ -314,12 +314,12 @@
 
     <!-- Replace config json variables -->
     <ItemGroup>
-      <SharedHostTokenValue Include="%RUNTIME_DEPS_RPM_PACKAGE_NAME%">
+      <SharedFrameworkTokenValue Include="%RUNTIME_DEPS_RPM_PACKAGE_NAME%">
         <ReplacementString>$(RuntimeDependenciesRpmPkgName)</ReplacementString>
-      </SharedHostTokenValue>
-      <SharedHostTokenValue Include="%RUNTIME_DEPS_VERSION%">
+      </SharedFrameworkTokenValue>
+      <SharedFrameworkTokenValue Include="%RUNTIME_DEPS_VERSION%">
         <ReplacementString>$(RuntimeDepsRpmVersion)</ReplacementString> 
-      </SharedHostTokenValue>
+      </SharedFrameworkTokenValue>
     </ItemGroup>
 
     <ReplaceFileContents InputFile="$(ConfigJsonFile)"
