@@ -311,6 +311,15 @@
     <MakeDir Directories="$(rpmLayoutPackageRoot)" />
     <MakeDir Directories="$(rpmLayoutDocs)" />
     <MakeDir Directories="$(rpmLayoutTemplates)" />
+    
+     <!-- Copy files to rpm layout -->
+    <ItemGroup>
+        <HFFiles Include="$(InputRoot)/**/*" />
+        <HFTemplatesFiles Include="$(TemplatesDir)/**/*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(HFFiles)" DestinationFiles="@(HFFiles->'$(rpmLayoutPackageRoot)/%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(HFTemplatesFiles)" DestinationFiles="@(HFTemplatesFiles->'$(rpmLayoutTemplates)/%(RecursiveDir)%(Filename)%(Extension)')" />
 
     <!-- Replace config json variables -->
     <ItemGroup>
