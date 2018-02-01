@@ -34,24 +34,33 @@ namespace Microsoft.DotNet.Build.Tasks
         {
             try
             {
+                Log.LogMessage(MessageImportance.Normal, "Test 1");
+                
                 if (!File.Exists(ConfigJsonFile))
                 {
                     throw new FileNotFoundException($"Expected file {ConfigJsonFile} was not found.");
                 }
+                
+                Log.LogMessage(MessageImportance.Normal, "Test 2");
 
                 // Open the Config Json and read the values into the model
                 TextReader projectFileReader = File.OpenText(ConfigJsonFile);
                 if (projectFileReader != null)
                 {
+                    Log.LogMessage(MessageImportance.Normal, "Test 3");
                     string jsonFileText = projectFileReader.ReadToEnd();
                     ConfigJson configJson = JsonConvert.DeserializeObject<ConfigJson>(jsonFileText);
-
+                    
+                    Log.LogMessage(MessageImportance.Normal, "Test 4");
                     // Update the Changelog and Copyright files by replacing tokens with values from config json
                     UpdateChangelog(configJson, PackageVersion);
+                    Log.LogMessage(MessageImportance.Normal, "Test 5");
                     UpdateCopyRight(configJson);
+                    Log.LogMessage(MessageImportance.Normal, "Test 6");
 
                     // Build the full list of parameters 
                     FPMParameters = BuildCmdParameters(configJson, PackageVersion);
+                    Log.LogMessage(MessageImportance.Normal, "Test 7");
                     Log.LogMessage(MessageImportance.Normal, "Generated RPM paramters:  " + FPMParameters);
                 }
                 else
@@ -61,6 +70,7 @@ namespace Microsoft.DotNet.Build.Tasks
             }
             catch (Exception e)
             {
+                Log.LogMessage(MessageImportance.Normal, "Test 8");
                 Log.LogError("Exception while processing RPM paramters: " + e.Message);
             }
 
