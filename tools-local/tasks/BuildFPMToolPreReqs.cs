@@ -151,41 +151,48 @@ namespace Microsoft.DotNet.Build.Tasks
             //      --url : url for this package.   --JSON
             //      --verbose : Set verbose output for FPM tool     --Static  
             //      <All folder mappings> : Add all the folder mappings for packge_root, docs, man pages   --Static
-
+            Log.LogMessage(MessageImportance.Normal, "Test 1");
             var parameters = new List<string>();
             parameters.Add("-s dir");
             parameters.Add("-t rpm");
             parameters.Add(string.Concat("-n ", configJson.Package_Name));
             parameters.Add(string.Concat("-v ", package_version));
             parameters.Add(string.Concat("-a ", configJson.Control.Architecture));
-
+            Log.LogMessage(MessageImportance.Normal, "Test 2");
             // Build the list of dependencies as -d <dep1> -d <dep2>
             if (configJson.Rpm_Dependencies != null)
             {
+                        Log.LogMessage(MessageImportance.Normal, "Test 3");
                 foreach (RpmDependency rpmdep in configJson.Rpm_Dependencies)
                 {
+                            Log.LogMessage(MessageImportance.Normal, "Test 4");
                     string dependency = "";
                     if (rpmdep.Package_Name != "")
                     {
                         // If no version is specified then the dependency is just the package without >= check
                         if (rpmdep.Package_Version == "")
                         {
+                                    Log.LogMessage(MessageImportance.Normal, "Test 5");
                             dependency = rpmdep.Package_Name;
                         }
                         else
                         {
+                                    Log.LogMessage(MessageImportance.Normal, "Test 6");
                             dependency = string.Concat(rpmdep.Package_Name, " >= ", rpmdep.Package_Version);
                         }
                     }
+                                Log.LogMessage(MessageImportance.Normal, "Test 7");
                     if (dependency != "") parameters.Add(string.Concat("-d ", EscapeArg(dependency)));
                 }
             }
-
+            Log.LogMessage(MessageImportance.Normal, "Test 8");
             // Build the list of owned directories
             if (configJson.Directories != null)
             {
+                        Log.LogMessage(MessageImportance.Normal, "Test 9");
                 foreach (string dir in configJson.Directories)
                 {
+                            Log.LogMessage(MessageImportance.Normal, "Test 10");
                     if (dir != "")
                     {
                         parameters.Add(string.Concat("--directories ", EscapeArg(dir)));
@@ -193,6 +200,7 @@ namespace Microsoft.DotNet.Build.Tasks
                 }
             }
             
+                        Log.LogMessage(MessageImportance.Normal, "Test 11");
             parameters.Add("--rpm-os linux");
             parameters.Add(string.Concat("--rpm-changelog ", EscapeArg(Path.Combine(InputDir, "templates", "changelog")))); // Changelog File
             parameters.Add(string.Concat("--rpm-summary ", EscapeArg(configJson.Short_Description)));
@@ -208,11 +216,13 @@ namespace Microsoft.DotNet.Build.Tasks
             parameters.Add(string.Concat("--url ", "\"", EscapeArg(configJson.Homepage), "\""));
             parameters.Add("--verbose");
 
+            Log.LogMessage(MessageImportance.Normal, "Test 12");
+
             // Map all the payload directories as they need to install on the system 
             if (configJson.Install_Root != null) parameters.Add(string.Concat(Path.Combine(InputDir, "package_root/="), configJson.Install_Root)); // Package Files
             if (configJson.Install_Man != null) parameters.Add(string.Concat(Path.Combine(InputDir, "docs", "host/="), configJson.Install_Man)); // Man Pages
             if (configJson.Install_Doc != null) parameters.Add(string.Concat(Path.Combine(InputDir, "templates", "copyright="), configJson.Install_Doc)); // CopyRight File
-
+            Log.LogMessage(MessageImportance.Normal, "Test 13");
             return string.Join(" ", parameters);
         }
 
