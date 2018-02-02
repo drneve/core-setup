@@ -1,6 +1,7 @@
 {
     "maintainer_name": ".NET Core Team",
     "maintainer_email": "dotnetpackages@dotnetfoundation.org",
+    "vendor": ".NET Foundation",
 
     "package_name": "%RUNTIME_DEPS_RPM_PACKAGE_NAME%",
     "install_root": "/usr/share/dotnet",
