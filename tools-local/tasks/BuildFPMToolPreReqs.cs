@@ -201,19 +201,32 @@ namespace Microsoft.DotNet.Build.Tasks
             }
             
                         Log.LogMessage(MessageImportance.Normal, "Test 11");
-            parameters.Add("--rpm-os linux");
+            parameters.Add("--rpm-os linux"); 
+            Log.LogMessage(MessageImportance.Normal, "Test a");
             parameters.Add(string.Concat("--rpm-changelog ", EscapeArg(Path.Combine(InputDir, "templates", "changelog")))); // Changelog File
+            Log.LogMessage(MessageImportance.Normal, "Test b");
             parameters.Add(string.Concat("--rpm-summary ", EscapeArg(configJson.Short_Description)));
+            Log.LogMessage(MessageImportance.Normal, "Test c");
             parameters.Add(string.Concat("--description ", EscapeArg(configJson.Long_Description)));
+            Log.LogMessage(MessageImportance.Normal, "Test d");
             parameters.Add(string.Concat("--maintainer ", EscapeArg(configJson.Maintainer_Name + " <" + configJson.Maintainer_Email + ">")));
-            parameters.Add(string.Concat("--vendor ", EscapeArg(configJson.Vendor)));            
+            Log.LogMessage(MessageImportance.Normal, "Test e");
+            parameters.Add(string.Concat("--vendor ", EscapeArg(configJson.Vendor)));
+            Log.LogMessage(MessageImportance.Normal, "Test f");
             parameters.Add(string.Concat("-p ", Path.Combine(OutputDir, configJson.Package_Name + ".rpm")));
+            Log.LogMessage(MessageImportance.Normal, "Test g");
             if (configJson.Package_Conflicts != null) parameters.Add(string.Concat("--conflicts ", EscapeArg(string.Join(",", configJson.Package_Conflicts))));
+            Log.LogMessage(MessageImportance.Normal, "Test h");
             if (configJson.After_Install_Source != null) parameters.Add(string.Concat("--after-install ", Path.Combine(InputDir, EscapeArg(configJson.After_Install_Source))));
+            Log.LogMessage(MessageImportance.Normal, "Test i");
             if (configJson.After_Remove_Source != null) parameters.Add(string.Concat("--after-remove ", Path.Combine(InputDir, EscapeArg(configJson.After_Remove_Source))));
+            Log.LogMessage(MessageImportance.Normal, "Test j");
             parameters.Add(string.Concat("--license ", EscapeArg(configJson.License.Type)));
+            Log.LogMessage(MessageImportance.Normal, "Test k");
             parameters.Add(string.Concat("--iteration ", configJson.Release.Package_Revision));
+            Log.LogMessage(MessageImportance.Normal, "Test l");
             parameters.Add(string.Concat("--url ", "\"", EscapeArg(configJson.Homepage), "\""));
+            Log.LogMessage(MessageImportance.Normal, "Test m");
             parameters.Add("--verbose");
 
             Log.LogMessage(MessageImportance.Normal, "Test 12");
