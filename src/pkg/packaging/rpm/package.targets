@@ -314,26 +314,24 @@
     
      <!-- Copy files to rpm layout -->
     <ItemGroup>
-        <HFFiles Include="$(InputRoot)/**/*" />
-        <HFTemplatesFiles Include="$(TemplatesDir)/**/*" />
+        <RDTemplatesFiles Include="$(TemplatesDir)/**/*" />
     </ItemGroup>
 
-    <Copy SourceFiles="@(HFFiles)" DestinationFiles="@(HFFiles->'$(rpmLayoutPackageRoot)/%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(HFTemplatesFiles)" DestinationFiles="@(HFTemplatesFiles->'$(rpmLayoutTemplates)/%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(RDTemplatesFiles)" DestinationFiles="@(RDTemplatesFiles->'$(rpmLayoutTemplates)/%(RecursiveDir)%(Filename)%(Extension)')" />
 
     <!-- Replace config json variables -->
     <ItemGroup>
-      <SharedFrameworkTokenValue Include="%RUNTIME_DEPS_RPM_PACKAGE_NAME%">
+      <RuntimeDependenciesTokenValue Include="%RUNTIME_DEPS_RPM_PACKAGE_NAME%">
         <ReplacementString>$(RuntimeDependenciesRpmPkgName)</ReplacementString>
-      </SharedFrameworkTokenValue>
-      <SharedFrameworkTokenValue Include="%RUNTIME_DEPS_VERSION%">
+      </RuntimeDependenciesTokenValue>
+      <RuntimeDependenciesTokenValue Include="%RUNTIME_DEPS_VERSION%">
         <ReplacementString>$(RuntimeDepsRpmVersion)</ReplacementString> 
-      </SharedFrameworkTokenValue>
+      </RuntimeDependenciesTokenValue>
     </ItemGroup>
 
     <ReplaceFileContents InputFile="$(ConfigJsonFile)"
                          DestinationFile="$(rpmLayoutDirectory)$(rpmConfigJsonName)"
-                         ReplacementItems="@(SharedFrameworkTokenValue)" />
+                         ReplacementItems="@(RuntimeDependenciesTokenValue)" />
 
     <!-- Call the task to build the pre-reqs (parameters, copyright, changelog) for calling the FPM tool -->
     <BuildFPMToolPreReqs  InputDir="$(rpmLayoutDirectory)"
