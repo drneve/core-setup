@@ -26,8 +26,10 @@ $testName = "Msi.Tests"
 $testProj="$PSScriptRoot\$testName\$testName.csproj"
 $testBin="$TestDir\$testName"
 
-$toolsLocalPath = Join-Path $PSScriptRoot "Tools"
+$toolsLocalPath = Join-Path $RepoRoot "Tools"
 $dotNetExe = Join-Path $toolsLocalPath "dotnetcli\dotnet.exe"
+
+Write-Output "dotnet cli path: $dotNetExe"
 
 try {
     & $dotNetExe restore $testProj | Out-Host
