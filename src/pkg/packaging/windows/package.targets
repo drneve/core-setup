@@ -122,12 +122,14 @@
          Condition="'$(OSGroup)' == 'Windows_NT' and '$(GenerateMSI)' == 'true'" >
 
    <PropertyGroup>
-      <TestMsiPowershellScript>$(WindowsScriptRoot)/test-installer/testmsi.ps1</TestMsiPowershellScript>
+      <TestMsiPowershellScript>$(WindowsScriptRoot)test-installer\testmsi.ps1</TestMsiPowershellScript>
+      <TestOutputDir>$(AssetOutputPath)test/</TestOutputDir>
    </PropertyGroup>
 
    <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) 
                    -InputMsi '$(SharedHostInstallerFile)'
-                   -TestDir '$(TestDir)'" />
+	           -TestDir '$(TestOutputDir)'" />
+		   
  </Target>
 
 </Project>
