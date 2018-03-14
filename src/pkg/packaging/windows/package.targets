@@ -126,9 +126,7 @@
       <TestOutputDir>$(AssetOutputPath)test/</TestOutputDir>
    </PropertyGroup>
 
-   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) 
-                   -InputMsi '$(SharedHostInstallerFile)'
-	           -TestDir '$(TestOutputDir)'" />
+   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) -InputMsi $(SharedHostInstallerFile)  -TestDir $(TestOutputDir)" />
 		   
  </Target>
 
