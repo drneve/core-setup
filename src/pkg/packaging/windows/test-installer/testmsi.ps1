@@ -52,12 +52,7 @@ try {
 
         Write-Output "Running installer tests"
 
-        $HOST_MSI = [System.IO.Path]::GetFileName($InputMsi)
-
-	Write-Output "Host msi : $HOST_MSI"
-	Write-Output "testBin : $testBin"
-	Write-Output "runTest : $runTest"
-
+        $env:HOST_MSI = [System.IO.Path]::GetFileName($InputMsi)
 	& $dotNetExe $runTest | Out-Host
 
 	Write-Output "after run test $runTest"

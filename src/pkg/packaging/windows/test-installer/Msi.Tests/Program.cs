@@ -7,6 +7,7 @@ namespace Msi.Tests
         static void Main(string[] args)
         {
             string msiFile = Environment.GetEnvironmentVariable("HOST_MSI");
+            Console.WriteLine("Test cs program");
             Console.WriteLine(msiFile);
         }
     }
