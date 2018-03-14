@@ -8,12 +8,12 @@ param(
 
 $RepoRoot = Convert-Path "$PSScriptRoot\..\..\..\..\.."
 $CommonScript = "$RepoRoot\tools-local\scripts\common\_common.ps1"
+
 if(-Not (Test-Path "$CommonScript"))
 {
     Exit -1
 } 
 . "$CommonScript"
-
 
 Write-Output "Running tests for MSI installer at $inputMsi."
 
@@ -59,8 +59,10 @@ try {
     	if($LastExitCode -ne 0)
     	{
         	throw "dotnet run-dll failed with exit code $LastExitCode."     
-    	}
-       
+    	} 
+}
+finally{
+	Write-Output "End of test"
 }
 
 Exit 0
