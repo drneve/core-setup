@@ -15,6 +15,7 @@
   <Target Name="Build" DependsOnTargets="BuildInstallers;BuildCombinedInstallers" Condition="'$(DOTNET_BUILD_SKIP_PACKAGING)' != 'true'" />
   <Target Name="BuildInstallers" DependsOnTargets="$(PackageTargets)" Condition="'$(DOTNET_BUILD_SKIP_PACKAGING)' != 'true'" />
   <Target Name="BuildCombinedInstallers" DependsOnTargets="GenerateCombinedInstallers" Condition="'$(DOTNET_BUILD_SKIP_PACKAGING)' != 'true'" />
+  <Target Name="TestInstallers" DependsOnTargets="TestMsi" Condition="'$(DOTNET_BUILD_SKIP_PACKAGING)' != 'true'" />
 
   <Target Name="InitPackage">
     <ItemGroup>

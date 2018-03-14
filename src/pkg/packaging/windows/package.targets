@@ -118,4 +118,16 @@
       <Exec Command="$(InsigniaCmd) -ab $(CombinedInstallerEngine) $(CombinedInstallerFile) -o $(CombinedInstallerFile)" />
   </Target>
 
+  <Target Name="TestMsi"
+         Condition="'$(OSGroup)' == 'Windows_NT' and '$(GenerateMSI)' == 'true'" >
+
+   <PropertyGroup>
+      <TestMsiPowershellScript>$(WindowsScriptRoot)/test-installer/testmsi.ps1</TestMsiPowershellScript>
+   </PropertyGroup>
+
+   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) 
+                   -InputMsi '$(SharedHostInstallerFile)'
+                   -TestDir '$(TestDir)'" />
+ </Target>
+
 </Project>
