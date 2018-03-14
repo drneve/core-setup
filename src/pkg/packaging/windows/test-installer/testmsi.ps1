@@ -24,7 +24,7 @@ if(!(Test-Path $InputMsi))
 
 $testName = "Msi.Tests"
 $testProj="$PSScriptRoot\$testName\$testName.csproj"
-$testBin="$TestDir\$testName"
+$testBin="$TestDir$testName"
 
 $toolsLocalPath = Join-Path $RepoRoot "Tools"
 $dotNetExe = Join-Path $toolsLocalPath "dotnetcli\dotnet.exe"
@@ -55,6 +55,8 @@ try {
         $HOST_MSI = [System.IO.Path]::GetFileName($InputMsi)
 
 	Write-Output "Host msi : $HOST_MSI"
+	Write-Output "testBin : $testBin"
+	Write-Output "runTest : $runTest"
 
 	& $dotNetExe $runTest | Out-Host
 
