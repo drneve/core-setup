@@ -46,7 +46,7 @@ try {
         throw "dotnet publish failed with exit code $LastExitCode."     
     }
 
-   
+ 
 	$runTest = Join-Path $testBin $testName
 	$runTest = $runTest + ".dll"
 
@@ -54,7 +54,7 @@ try {
 
         $HOST_MSI = [System.IO.Path]::GetFileName($InputMsi)
 
-	Write-Output "Host msi : $HOST_MSI
+	Write-Output "Host msi : $HOST_MSI"
 
 	& $dotNetExe $runTest | Out-Host
 
