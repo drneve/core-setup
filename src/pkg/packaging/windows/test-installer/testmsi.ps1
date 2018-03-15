@@ -8,12 +8,18 @@ param(
 
 $RepoRoot = Convert-Path "$PSScriptRoot\..\..\..\..\.."
 $CommonScript = "$RepoRoot\tools-local\scripts\common\_common.ps1"
+$dotNetExe = Join-Path $RepoRoot "Tools\dotnetcli\dotnet.exe"
 
 if(-Not (Test-Path "$CommonScript"))
 {
     Exit -1
 } 
 . "$CommonScript"
+
+function CopyExe([string]$destination)
+{
+    Copy-Item $dotNetExe -Destination:$destination
+}
 
 Write-Output "Running tests for MSI installer at $inputMsi."
 
@@ -46,14 +52,16 @@ try {
         throw "dotnet publish failed with exit code $LastExitCode."     
     }
 
- 
-	$runTest = Join-Path $testBin $testName
-	$runTest = $runTest + ".dll"
+
+	CopyExe $testBin
+
+#	$runTest = Join-Path $testBin $testName
+#	$runTest = $runTest + ".dll"
 
         Write-Output "Running installer tests"
+        $MsiFileName = [System.IO.Path]::GetFileName($InputMsi)
 
-        $env:HOST_MSI = [System.IO.Path]::GetFileName($InputMsi)
-	& $dotNetExe $runTest | Out-Host
+	docker run --rm -v "$testBin\:D:" -e "HOST_MSI=D:\$MsiFileName"  windowsservercore  D:\dotnet.exe D:\$testName.dll | Out-Host
 
 	Write-Output "after run test $runTest"
 
