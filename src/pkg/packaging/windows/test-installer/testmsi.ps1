@@ -16,10 +16,6 @@ if(-Not (Test-Path "$CommonScript"))
 } 
 . "$CommonScript"
 
-function CopyExe([string]$destination)
-{
-    Copy-Item $dotNetExe -Destination:$destination
-}
 
 Write-Output "Running tests for MSI installer at $inputMsi."
 
@@ -36,9 +32,15 @@ $toolsLocalPath = Join-Path $RepoRoot "Tools"
 $dotNetExe = Join-Path $toolsLocalPath "dotnetcli\dotnet.exe"
 
 Write-Output "dotnet cli path: $dotNetExe"
+if(!(Test-Path $dotNetExe))
+{
+    throw "$dotNetExe not found" 
+}
+
 
 try {
-    & $dotNetExe restore $testProj | Out-Host
+     
+     & $dotNetExe restore $testProj
 
     if($LastExitCode -ne 0)
     {
@@ -53,16 +55,22 @@ try {
     }
 
 
-	CopyExe $testBin
 
-#	$runTest = Join-Path $testBin $testName
-#	$runTest = $runTest + ".dll"
+	$runTest = Join-Path $testBin $testName
+	$runTest = $runTest + ".exe"
+
+	if(!(Test-Path $runTest))
+	{
+	    throw "$runTest not found"
+	}
+
 
         Write-Output "Running installer tests"
-        $MsiFileName = [System.IO.Path]::GetFileName($InputMsi)
+        $env:HOST_MSI = $InputMsi
 
-	docker run --rm -v "$testBin\:D:" -e "HOST_MSI=D:\$MsiFileName"  windowsservercore  D:\dotnet.exe D:\$testName.dll | Out-Host
+	Write-Output "$runTest"
 
+	& $dotNetExe run $runTest
 	Write-Output "after run test $runTest"
 
     	if($LastExitCode -ne 0)
@@ -70,7 +78,8 @@ try {
         	throw "dotnet run-dll failed with exit code $LastExitCode."     
     	} 
 }
-finally{
+
+finally {
 	Write-Output "End of test"
 }
 
