@@ -70,7 +70,7 @@ try {
 
 	Write-Output "$runTest"
 
-	& $dotNetExe run $runTest
+	& $runTest
 	Write-Output "after run test $runTest"
 
     	if($LastExitCode -ne 0)
