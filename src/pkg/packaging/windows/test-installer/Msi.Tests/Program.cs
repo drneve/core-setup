@@ -1,28 +1,32 @@
 ﻿using System;
-//using System.Linq;
+using System.IO;
 using Microsoft.Deployment.WindowsInstaller;
-//using Microsoft.Deployment.WindowsInstaller.Linq;
+using Xunit;
+using System.Collections.Generic;
 
 namespace Msi.Tests
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+	[Fact]
+	public void ProductNameTest()
         {
-	    Console.WriteLine("test dri!!");
-	    string msiFile = Environment.GetEnvironmentVariable("HOST_MSI");
-	    Console.WriteLine(@msiFile);
-	    using (var database = new Database(@msiFile, DatabaseOpenMode.ReadOnly))
-            {
-                using (var view = database.OpenView(database.Tables["Property"].SqlSelectString))
-                {
-                    view.Execute();
-                    foreach (var rec in view) using (rec)
-                        {
-                            Console.WriteLine("{0} = {1}", rec.GetString("Property"), rec.GetString("Value"));
-                        }
-                }
-            }
-       }
+	    string prodVersion = Environment.GetEnvironmentVariable("PROD_VERSION");
+	    //Console.WriteLine(prodVersion);
+	    
+	    var msiList = Environment.GetEnvironmentVariable("MSI_LIST");
+	    string[] lines = System.IO.File.ReadAllLines(msiList);
+	    foreach( string msi in lines ) 
+	    {
+		    using (var database = new Database(msi, DatabaseOpenMode.ReadOnly))
+		    {
+			    string prodName = database.ExecutePropertyQuery("ProductName");
+			    Assert.True(prodName.Contains(prodVersion), "Different brand name");
+	//		    IList<string> list = database.ExecuteStringQuery("SELECT `ComponentId` FROM `Component` WHERE `Component`='{0}'", new object[]{"Dotnet_CLI_SharedHost_16.64.26314_x64"});
+	//		    Assert.Equal("{82516259-FF21-446E-A432-1FFCA5A02296}" , list[0]);
+		    }
+	    }	
+	}
+
     }
 }

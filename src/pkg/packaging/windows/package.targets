@@ -122,11 +122,24 @@
          Condition="'$(OSGroup)' == 'Windows_NT' and '$(GenerateMSI)' == 'true'" >
 
    <PropertyGroup>
-      <TestMsiPowershellScript>$(WindowsScriptRoot)test-installer\testmsi.ps1</TestMsiPowershellScript>
-      <TestOutputDir>$(AssetOutputPath)test/</TestOutputDir>
+	 <TestMsiPowershellScript>$(WindowsScriptRoot)test-installer\testmsi.ps1</TestMsiPowershellScript> 
+	 <ProductionVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</ProductionVersion>
+	 <TestOutputDir>$(AssetOutputPath)test/</TestOutputDir>
+	 <HostMsi>C:\Users\t-drneve\core-setup\Bin\win-x64.Debug\packages\dotnet-host-2.1.0-preview2-26314-0-win-x64.msi</HostMsi>
+	 <HostfxrMsi>C:\Users\t-drneve\core-setup\Bin\win-x64.Debug\packages\dotnet-hostfxr-2.1.0-preview2-26314-0-win-x64.msi</HostfxrMsi>
+	 <RuntimeMsi>C:\Users\t-drneve\core-setup\Bin\win-x64.Debug\packages\dotnet-runtime-2.1.0-preview2-26314-0-win-x64.msi</RuntimeMsi>
+	 <RuntimeExe>C:\Users\t-drneve\core-setup\Bin\win-x64.Debug\packages\dotnet-runtime-2.1.0-preview2-26314-0-win-x64.exe</RuntimeExe>
    </PropertyGroup>
 
-   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) -InputMsi $(SharedHostInstallerFile)  -TestDir $(TestOutputDir)" />
+   <ItemGroup>
+	   <InstallerFile Include=" C:\Users\t-drneve\core-setup\Bin/win-x64.Debug/packages/dotnet-host-2.1.0-preview2-26314-0-win-x64.msi " /> 
+	   <!--
+	   <InstallerFile Include=" C:\Users\t-drneve\core-setup\Bin/win-x64.Debug/packages/dotnet-hostfxr-2.1.0-preview2-26314-0-win-x64.msi " /> 
+	   <InstallerFile Include=" C:\Users\t-drneve\core-setup\Bin/win-x64.Debug/packages/dotnet-runtime-2.1.0-preview2-26314-0-win-x64.msi " />
+	   -->
+   </ItemGroup> 
+
+   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) -TestDir $(TestOutputDir) -InputMsi $(HostMsi), $(HostfxrMsi), $(RuntimeMsi)  -InputExe $(RuntimeExe) -ProductVersion $(ProductionVersion)" />
 		   
  </Target>
 
