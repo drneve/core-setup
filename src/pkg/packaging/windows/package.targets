@@ -125,7 +125,7 @@
 	 <TestMsiPowershellScript>$(WindowsScriptRoot)test-installer\testmsi.ps1</TestMsiPowershellScript> 
 	 <ProductionVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</ProductionVersion>
 	 <HostMsi>$(SharedHostInstallerFile)</HostMsi>
-         <HostfxrMsi>$(HostFxrInstallerFile)</HostFxrMsi>
+         <HostfxrMsi>$(HostFxrInstallerFile)</HostfxrMsi>
 	 <RuntimeMsi>$(SharedFrameworkInstallerFile)</RuntimeMsi>
 	 <RuntimeExe>$(CombinedInstallerFile)</RuntimeExe>
 
