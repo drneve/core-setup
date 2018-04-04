@@ -59,10 +59,10 @@ function CreateMsiListFile()
 Write-Output "Running tests for MSI installer at $inputMsi."
 
 $testName = "Msi.Tests"
-$testProjDir="$PSScriptRoot\$testName"
-$testBin= Join-Path $TestDir "$testName"
+#$testProjDir="$PSScriptRoot\$testName"
+$testBin= $TestDir 
 
-$dockerDir="$testBin\dockerDir"
+$dockerDir= Join-Path $testBin "dockerDir"
 #$dllProj="$dockerDir\$testName.dll"
 
 $listMsiFileName="ListMsi.txt"
@@ -70,7 +70,7 @@ $msiListPath="$dockerDir\$listMsiFileName"
 
 Write-Output "$TestDir"
 
-Copy-Item $testProjDir -Destination $TestDir -Recurse
+#Copy-Item $testProjDir -Destination $TestDir -Recurse
 
 pushd "$testBin"
 
@@ -90,6 +90,7 @@ try {
         throw "dotnet build failed with exit code $LastExitCode."
     }
 
+
     Write-Output "Running installer tests"
    
     CopyInstaller $dockerDir
@@ -98,7 +99,7 @@ try {
 
     $RuntimeExeFileName = [System.IO.Path]::GetFileName($InputExe)
 
-    docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
+    #docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
 
    # & $dotNetExe vstest $dllProj
 

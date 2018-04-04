@@ -140,21 +140,19 @@
    <PropertyGroup>
 	   <TestOSPlatformConfig>$(TestTargetRid).$(ConfigurationGroup)</TestOSPlatformConfig>
 	   <TestsOutputDir Condition="'$(TestsOutputDir)' == ''">$(BaseOutputPath)tests/$(TestOSPlatformConfig)/</TestsOutputDir>
-	   <MsiTestsOutputDir>$(TestsOutputDir)Msi.Tests/</MsiTestsOutputDir>
+	   <MsiTestsOutputDir>$(TestsOutputDir)Msi.Tests</MsiTestsOutputDir>
    </PropertyGroup>
    
    <RemoveDir Condition="Exists('$(MsiTestsOutputDir)')" Directories="$(MsiTestsOutputDir)" />
+   <MakeDir Directories="$(MsiTestsOutputDir)" />
 
    <ItemGroup>
-	   <InstallerFile Include=" C:\Users\t-drneve\core-setup\Bin/win-x64.Debug/packages/dotnet-host-2.1.0-preview2-26314-0-win-x64.msi " /> 
-	   <!--
-	   <InstallerFile Include=" C:\Users\t-drneve\core-setup\Bin/win-x64.Debug/packages/dotnet-hostfxr-2.1.0-preview2-26314-0-win-x64.msi " /> 
-	   <InstallerFile Include=" C:\Users\t-drneve\core-setup\Bin/win-x64.Debug/packages/dotnet-runtime-2.1.0-preview2-26314-0-win-x64.msi " />
-	   -->
-   </ItemGroup> 
+	   <CSFiles Include="$(WindowsScriptRoot)test-installer/Msi.Tests/**/*" />
+   </ItemGroup>
+   <Copy SourceFiles="@(CSFiles)" DestinationFiles="@(CSFiles->'$(MsiTestsOutputDir)/%(RecursiveDir)%(Filename)%(Extension)')" />
 
-   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) -TestDir $(TestsOutputDir) -InputMsi $(HostMsi), $(HostfxrMsi), $(RuntimeMsi)  -InputExe $(RuntimeExe) -ProductVersion $(ProductionVersion)" />
-		   
+   <Message Text="HEREEE" />
+   <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) -TestDir $(MsiTestsOutputDir) -InputMsi $(HostMsi), $(HostfxrMsi), $(RuntimeMsi)  -InputExe $(RuntimeExe) -ProductVersion $(ProductionVersion)" />
  </Target>
 
 </Project>
