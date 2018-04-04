@@ -145,12 +145,12 @@
    
    <RemoveDir Condition="Exists('$(MsiTestsOutputDir)')" Directories="$(MsiTestsOutputDir)" />
    <MakeDir Directories="$(MsiTestsOutputDir)" />
-
+   <!--
    <ItemGroup>
 	   <CSFiles Include="$(WindowsScriptRoot)test-installer/Msi.Tests/**/*" />
    </ItemGroup>
    <Copy SourceFiles="@(CSFiles)" DestinationFiles="@(CSFiles->'$(MsiTestsOutputDir)/%(RecursiveDir)%(Filename)%(Extension)')" />
-
+-->
    <Message Text="HEREEE" />
    <Exec Command ="powershell -NoProfile -NoLogo $(TestMsiPowershellScript) -TestDir $(MsiTestsOutputDir) -InputMsi $(HostMsi), $(HostfxrMsi), $(RuntimeMsi)  -InputExe $(RuntimeExe) -ProductVersion $(ProductionVersion)" />
  </Target>

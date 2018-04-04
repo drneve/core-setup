@@ -55,7 +55,58 @@ function CreateMsiListFile()
     }
 }
 
+Write-Output "Running tests for MSI installer at $inputMsi."
 
+$testName = "Msi.Tests"
+$testProj="$PSScriptRoot\$testName\$testName.csproj"
+$testBin= $TestDir 
+
+$dockerDir= Join-Path $testBin "dockerDir"
+$dllProj="$dockerDir\$testName.dll"
+
+$listMsiFileName="ListMsi.txt"
+$msiListPath="$dockerDir\$listMsiFileName"
+
+try {
+     
+    & $dotNetExe restore $testProj
+
+    if($LastExitCode -ne 0)
+    {
+        throw "dotnet restore failed with exit code $LastExitCode."     
+    }
+
+    & $dotNetExe build --no-restore --output $dockerDir $testProj
+
+    if($LastExitCode -ne 0)
+    {
+        throw "dotnet build failed with exit code $LastExitCode."
+    }
+
+
+    Write-Output "Running installer tests"
+   
+    CopyInstaller $dockerDir
+    CopyDotnetCli $dockerDir
+    CreateMsiListFile
+
+    $RuntimeExeFileName = [System.IO.Path]::GetFileName($InputExe)
+
+    docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
+
+    #& $dotNetExe vstest $dllProj
+
+    if($LastExitCode -ne 0)
+    {
+        throw "dotnet test failed with exit code $LastExitCode."     
+    }
+}
+
+finally {
+    popd
+    Write-Output "End of test"
+}
+<#
 Write-Output "Running tests for MSI installer at $inputMsi."
 
 $testName = "Msi.Tests"
@@ -113,4 +164,5 @@ finally {
     popd
     Write-Output "End of test"
 }
+#>
 Exit 0
