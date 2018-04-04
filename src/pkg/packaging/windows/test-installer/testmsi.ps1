@@ -40,7 +40,7 @@ function CopyInstaller([string]$destination)
 
 function CopyDotnetCli([string]$destination)
 {
-    Copy-Item -Path $dotNetCli -Destination $destination -Recurse -ErrorAction Ignore
+    Copy-Item -Path $dotNetCli -Destination $destination -Recurse
 }
 
 function CreateMsiListFile()
@@ -59,33 +59,31 @@ function CreateMsiListFile()
 Write-Output "Running tests for MSI installer at $inputMsi."
 
 $testName = "Msi.Tests"
-#$testBin="$RepoRoot\Bin\win-x64.Debug\Msi.Tests\net46"
-#$testProj="$PSScriptRoot\$testName\$testName.csproj"
-$testProj="$PSScriptRoot\$testName"
+$testProjDir="$PSScriptRoot\$testName"
 $testBin= Join-Path $TestDir "$testName"
 
+$dockerDir="$testBin\dockerDir"
+#$dllProj="$dockerDir\$testName.dll"
+
 $listMsiFileName="ListMsi.txt"
-$msiListPath="$testBin\$listMsiFileName"
+$msiListPath="$dockerDir\$listMsiFileName"
 
-if(Test-Path $testBin){
-    Remove-Item $testBin -Recurse -Force -ErrorAction Ignore
-}
-Write-Output "$testBin"
-New-Item -Name $testBin -ItemType directory
+Write-Output "$TestDir"
 
-#Copy-Item $testProj -Destination $testBin
+Copy-Item $testProjDir -Destination $TestDir -Recurse
 
-<#
+pushd "$testBin"
+
 try {
      
-    & $dotNetExe restore $testProj
+    & $dotNetExe restore
 
     if($LastExitCode -ne 0)
     {
         throw "dotnet restore failed with exit code $LastExitCode."     
     }
 
-    & $dotNetExe build $testProj
+    & $dotNetExe build --output $dockerDir 
 
     if($LastExitCode -ne 0)
     {
@@ -94,25 +92,24 @@ try {
 
     Write-Output "Running installer tests"
    
-   
-    $RuntimeExeFileName = [System.IO.Path]::GetFileName($InputExe)
-
-    CopyInstaller $testBin
-    CopyDotnetCli $testBin
+    CopyInstaller $dockerDir
+    CopyDotnetCli $dockerDir
     CreateMsiListFile
 
-    docker run --rm -v "$testBin\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
+    $RuntimeExeFileName = [System.IO.Path]::GetFileName($InputExe)
 
-#    & $dotNetExe test $testProj
+    docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
+
+   # & $dotNetExe vstest $dllProj
 
     if($LastExitCode -ne 0)
     {
-        throw "dotnet xunit failed with exit code $LastExitCode."     
+        throw "dotnet test failed with exit code $LastExitCode."     
     }
 }
 
 finally {
+    popd
     Write-Output "End of test"
 }
-#>
 Exit 0
