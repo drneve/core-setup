@@ -99,7 +99,7 @@ try {
 
     $RuntimeExeFileName = [System.IO.Path]::GetFileName($InputExe)
 
-    #docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
+    docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
 
    # & $dotNetExe vstest $dllProj
 
