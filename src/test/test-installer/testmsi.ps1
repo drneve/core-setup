@@ -88,8 +88,6 @@ try {
     {
         throw "dotnet build failed with exit code $LastExitCode."
     }
-
-    Write-Output "Running installer tests"
    
     CopyInstaller $dockerDir
     CopyDotnetCli $dockerDir
@@ -97,12 +95,16 @@ try {
 
     $RuntimeExeFileName = [System.IO.Path]::GetFileName($InputExe)
 
+    Write-Host (docker images)
+
+    Write-Output "Running installer tests in Docker Container"
+
     docker run --rm -v "$dockerDir\:C:\sharedFolder" -e RUNTIME_EXE=$RuntimeExeFileName -e MSI_LIST=$listMsiFileName -e PROD_VERSION=$ProductVersion microsoft/windowsservercore C:\sharedFolder\dotnetcli\dotnet.exe vstest C:\sharedFolder\$testName.dll | Out-Host
 
     if($LastExitCode -ne 0)
     {
         throw "dotnet test failed with exit code $LastExitCode."     
-    }
+    } 
     
 }
 

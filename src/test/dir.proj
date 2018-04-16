@@ -9,12 +9,14 @@
         DetermineTestOutputDirectory;
         RestoreTests;
         BuildTests;
-        RunTests;
+	RunTests;
+	TestInstallers;
     </BuildTestTargets>
   </PropertyGroup>
 
-  
   <Target Name="Build" DependsOnTargets="$(BuildTestTargets)" />
+
+  <Target Name="TestInstallers" DependsOnTargets="TestDocker;TestMsi" />
 
   <Target Name="DetermineTestOutputDirectory">
     <GetTargetMachineInfo>
@@ -129,7 +131,6 @@
           DestinationFiles="@(SharedFrameworkPublishFiles->'$(TestsOutputDir)sharedFrameworkPublish/%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
-  <Target Name="TestInstallers" DependsOnTargets="TestDocker;TestMsi" />
 
   <Target Name="TestMsi"
          Condition="'$(OSGroup)' == 'Windows_NT' and '$(GenerateMSI)' == 'true' and '$(DockerPresent)' == 'true' "  >
